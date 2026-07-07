@@ -102,6 +102,17 @@ npm run build
 # Start the Vite development server (listens on http://localhost:5173)
 npm run dev
 ```
+## Live Demo
+
+Frontend:
+https://biz-pilot-ai-os-j4y6.vercel.app
+
+
+
+Backend:
+The backend is included in this repository. Run it locally using:
+
+uvicorn backend.app.main:app --reload
 
 ### 3. Log In to Dashboard
 - Open `http://localhost:5173/` in your browser.
