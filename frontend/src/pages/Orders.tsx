@@ -30,10 +30,10 @@ export const Orders: React.FC = () => {
     try {
       const ordersData = await orderService.getOrders();
       const suppliersData = await orderService.getSuppliers();
-      const inventoryData = await inventoryService.getProducts();
+      const inventoryData = await inventoryService.getProducts(undefined, undefined, 1, 1000);
       setOrders(ordersData);
       setSuppliers(suppliersData);
-      setProducts(inventoryData);
+      setProducts(inventoryData.products || []);
     } catch (err) {
       console.error("Failed to load orders data:", err);
     } finally {
