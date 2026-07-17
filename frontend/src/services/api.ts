@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// FastAPI runs on port 8000 by default
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// FastAPI runs on port 8000 by default or relative path in production
+const API_URL = import.meta.env.VITE_API_URL !== undefined ? import.meta.env.VITE_API_URL : 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_URL,

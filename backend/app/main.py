@@ -212,10 +212,33 @@ def seed_data():
 
 seed_data()
 
-@app.get("/")
-def read_root():
-    return {
-        "status": "online",
-        "service": "BizPilot AI OS",
-        "description": "The AI Operating System for Small Businesses."
-    }
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Serve frontend static assets (CSS, JS, etc.) if built
+frontend_dist_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "frontend", "dist")
+
+if os.path.exists(frontend_dist_path):
+    # Mount assets directory for JS/CSS files
+    assets_path = os.path.join(frontend_dist_path, "assets")
+    if os.path.exists(assets_path):
+        app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
+        
+    # Catch-all route to serve the React index.html for any frontend pages (SPA routing)
+    @app.get("/{catchall:path}")
+    def read_index(catchall: str):
+        # Allow requests to specific root-level files like favicon.svg or icons.svg
+        file_path = os.path.join(frontend_dist_path, catchall)
+        if catchall and os.path.isfile(file_path):
+            return FileResponse(file_path)
+        # Otherwise serve index.html for SPA routes
+        return FileResponse(os.path.join(frontend_dist_path, "index.html"))
+else:
+    @app.get("/")
+    def read_root():
+        return {
+            "status": "online",
+            "service": "BizPilot AI OS",
+            "description": "The AI Operating System for Small Businesses."
+        }

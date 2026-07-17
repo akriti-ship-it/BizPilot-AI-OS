@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: bizpilot-ai-os
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: starter # Starter plan supports persistent disks
+    region: oregon # Default region
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: DATABASE_URL
+        value: sqlite:////app/data/bizpilot.db
+      - key: OPENAI_API_KEY
+        sync: false # Set this value in the Render dashboard
+    disk:
+      name: bizpilot-data
+      mountPath: /app/data
+      sizeGB: 1
